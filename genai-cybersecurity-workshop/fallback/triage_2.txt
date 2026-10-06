@@ -1,0 +1,1 @@
+{"verdict":"FALSE_POSITIVE","confidence":0.9,"reason":"os is imported but never used; the rule matches on the import alone.","patch":"Remove the unused import."}

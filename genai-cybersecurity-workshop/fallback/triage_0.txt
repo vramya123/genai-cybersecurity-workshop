@@ -1,0 +1,1 @@
+{"verdict":"TRUE_POSITIVE","confidence":0.97,"reason":"request.args value is f-string interpolated into SQL.","patch":"db.execute('SELECT * FROM users WHERE name = ?', (name,))"}

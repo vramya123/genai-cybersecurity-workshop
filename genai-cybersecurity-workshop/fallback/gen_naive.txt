@@ -1,0 +1,8 @@
+```python
+@app.route("/user")
+def get_user():
+    name = request.args.get("name")
+    conn = sqlite3.connect("app.db")
+    row = conn.execute(f"SELECT * FROM users WHERE name = '{name}'").fetchone()
+    return jsonify(dict(row)) if row else ("Not found", 404)
+```

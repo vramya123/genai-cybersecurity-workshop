@@ -1,0 +1,8 @@
+Spoofing: (1) forged or stolen JWT accepted by the API (verify signature, aud, exp; pin the IdP JWKS); (2) admin impersonation via /admin on a shared surface (separate admin network and MFA).
+Tampering: (1) presigned-URL abuse to overwrite S3 objects (short expiry, key prefix per user); (2) mass assignment in Flask JSON handlers (allow-list fields).
+Repudiation: (1) no audit trail for /admin actions (immutable logs with user id); (2) missing request ids across gateway and service.
+Information disclosure: (1) IDOR on user records (object-level authorization); (2) verbose errors leak SQL or stack traces (generic errors).
+Denial of service: (1) unbounded uploads (size caps, quotas); (2) no rate limits at the gateway (per-client throttling).
+Elevation of privilege: (1) /admin reachable with a normal user token (role claim check server-side); (2) SQL injection to database admin (least-privilege DB role, parameterized queries).
+Top risks: 1 IDOR (high x high), 2 JWT validation gaps, 3 /admin exposure, 4 injection.
+Staging tests: replay a tampered JWT; request another user's id with your token; call /admin with a non-admin token.

@@ -1,0 +1,21 @@
+name: ai-security-gate
+on: [pull_request]
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install anthropic semgrep
+      - name: SAST
+        run: semgrep --config auto --json -o semgrep.json . || true
+      - name: AI triage
+        env: { ANTHROPIC_API_KEY: "${{ secrets.ANTHROPIC_API_KEY }}" }
+        run: python triage.py semgrep.json
+      - name: AI diff review
+        env: { ANTHROPIC_API_KEY: "${{ secrets.ANTHROPIC_API_KEY }}" }
+        run: python ai_review.py --base origin/${{ github.base_ref }}

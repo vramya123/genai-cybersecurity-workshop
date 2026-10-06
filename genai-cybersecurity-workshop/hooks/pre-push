@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Local stand-in for the CI gate: blocks the push if the AI reviewer finds critical/high issues.
+python ai_review.py --base main || { echo "Push blocked by AI security gate."; exit 1; }

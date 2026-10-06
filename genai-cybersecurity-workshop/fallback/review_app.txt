@@ -1,0 +1,10 @@
+{"findings":[
+{"file":"app.py","line":11,"cwe":"CWE-89","severity":"critical","title":"SQL injection in /user",
+ "explanation":"The name parameter is interpolated into the SQL string, so ' OR 1=1-- returns all rows.",
+ "fix":"db.execute('SELECT * FROM users WHERE name = ?', (name,))"},
+{"file":"app.py","line":17,"cwe":"CWE-78","severity":"critical","title":"OS command injection in /ping",
+ "explanation":"host goes into a shell command; 8.8.8.8; cat /etc/passwd executes arbitrary commands.",
+ "fix":"subprocess.run(['ping','-c','1',host], capture_output=True, text=True) after validating host with ipaddress"},
+{"file":"app.py","line":5,"cwe":"CWE-798","severity":"high","title":"Hardcoded API key",
+ "explanation":"A live-looking key is committed to source and will leak via the repo and its history.",
+ "fix":"API_KEY = os.environ['API_KEY']; rotate the exposed key"}]}

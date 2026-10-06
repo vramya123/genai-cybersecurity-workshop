@@ -1,0 +1,20 @@
+```python
+import os, sqlite3
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+DB_PATH = os.environ["APP_DB_PATH"]
+
+@app.route("/user")
+def get_user():
+    name = request.args.get("name", "")
+    if not (0 < len(name) <= 64):
+        return jsonify(error="invalid request"), 400
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        row = conn.execute("SELECT id, name FROM users WHERE name = ?", (name,)).fetchone()
+    return (jsonify(dict(row)), 200) if row else (jsonify(error="not found"), 404)
+```
+CWEs considered: CWE-89 (SQL injection) via parameterized query; CWE-20 input validation;
+CWE-209 generic errors; CWE-798 no hardcoded paths/secrets (env var).
+Residual risk: no authentication or rate limiting on this endpoint; add both before production.

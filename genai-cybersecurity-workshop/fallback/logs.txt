@@ -1,0 +1,8 @@
+1. 203.0.113.9 - credential brute force then success (T1110, high confidence)
+   4 failed POST /login within 3s, then a 200. Treat the account as compromised: force reset, revoke sessions, review its activity after 10:03:14.
+2. 198.51.100.7 - SQL injection then command injection (T1190, high confidence)
+   OR 1=1 and UNION SELECT probes on /user, then ;cat /etc/passwd on /ping returned 200 with 1893 bytes. Likely successful RCE. Block IP, isolate host, rotate secrets, hunt for persistence.
+3. 192.0.2.44 - admin and secrets reconnaissance (T1595, medium confidence)
+   /admin, /admin/backup.zip, /.env all denied or missing. Monitor, rate-limit, verify no sensitive files are exposed.
+Benign: 10.0.0.5 and 10.0.0.8 look like normal internal traffic.
+Next: patch the two injection flaws first (they are the entry points), then add WAF rules and login throttling.

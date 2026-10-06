@@ -1,0 +1,7 @@
+{"findings":[
+{"file":"infra/main.tf","line":7,"cwe":"CWE-284","severity":"high","title":"SSH open to the internet",
+ "explanation":"Port 22 allows 0.0.0.0/0, exposing the host to brute force and exploit scanning.",
+ "fix":"cidr_blocks = [\"10.0.0.0/8\"] or use SSM Session Manager and remove the rule"},
+{"file":"infra/main.tf","line":13,"cwe":"CWE-732","severity":"high","title":"Public-read S3 bucket",
+ "explanation":"acl public-read exposes every uploaded object to anyone.",
+ "fix":"acl = \"private\" plus aws_s3_bucket_public_access_block and server-side encryption"}]}
